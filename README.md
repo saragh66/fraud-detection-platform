@@ -1,299 +1,140 @@
-# 🛡️ Real-Time Payment Fraud Detection Platform
+<div align="center">
+    <a href="https://php.net">
+        <img
+            alt="PHP"
+            src="https://www.php.net/images/logos/new-php-logo.svg"
+            width="150">
+    </a>
+</div>
 
-![Python](https://img.shields.io/badge/Python-3.10-3776AB?style=for-the-badge&logo=python&logoColor=white)
-![GCP](https://img.shields.io/badge/GCP-Cloud-4285F4?style=for-the-badge&logo=googlecloud&logoColor=white)
-![Terraform](https://img.shields.io/badge/Terraform-IaC-7B42BC?style=for-the-badge&logo=terraform&logoColor=white)
-![Kafka](https://img.shields.io/badge/Apache_Kafka-Streaming-231F20?style=for-the-badge&logo=apachekafka&logoColor=white)
-![Spark](https://img.shields.io/badge/Apache_Spark-Processing-E25A1C?style=for-the-badge&logo=apachespark&logoColor=white)
-![BigQuery](https://img.shields.io/badge/BigQuery-DWH-4285F4?style=for-the-badge&logo=googlebigquery&logoColor=white)
-![dbt](https://img.shields.io/badge/dbt-Transformations-FF694B?style=for-the-badge&logo=dbt&logoColor=white)
-![Airflow](https://img.shields.io/badge/Airflow-Orchestration-017CEE?style=for-the-badge&logo=apacheairflow&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-Dashboard-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)
+# The PHP Interpreter
 
-> **DE Zoomcamp 2025 — Capstone Project**
-> End-to-end real-time data engineering pipeline for payment fraud detection
+PHP is a popular general-purpose scripting language that is especially suited to
+web development. Fast, flexible and pragmatic, PHP powers everything from your
+blog to the most popular websites in the world. PHP is distributed under the
+[PHP License v3.01](LICENSE).
 
----
+[![Push](https://github.com/php/php-src/actions/workflows/push.yml/badge.svg)](https://github.com/php/php-src/actions/workflows/push.yml)
+[![Build status](https://travis-ci.com/php/php-src.svg?branch=master)](https://travis-ci.com/github/php/php-src)
+[![Fuzzing Status](https://oss-fuzz-build-logs.storage.googleapis.com/badges/php.svg)](https://bugs.chromium.org/p/oss-fuzz/issues/list?sort=-opened&can=1&q=proj:php)
 
-## 🎯 Problem Statement
+## Documentation
 
-Payment card fraud is a **global financial threat** costing the industry over **$32 billion annually** (Nilson Report). Traditional batch-processing systems detect fraud hours or days after it occurs — too late to prevent losses.
+The PHP manual is available at [php.net/docs](https://php.net/docs).
 
-This platform addresses the problem by building a **real-time streaming pipeline** that:
-- Ingests **1.3M+ credit card transactions** as a continuous stream
-- Processes and scores each transaction in real-time using **risk levels** (LOW / MEDIUM / HIGH)
-- Stores results in an optimized **cloud data warehouse**
-- Transforms raw data into **analytical models** using dbt
-- Visualizes fraud patterns across **merchants, geographies, time and demographics**
+## Installation
 
-The goal is to give fraud analysts an **always-on, up-to-date dashboard** to monitor suspicious activity and act before losses occur.
+### Prebuilt packages and binaries
 
----
+Prebuilt packages and binaries can be used to get up and running fast with PHP.
 
-## 🏗️ Architecture
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                     DATA PIPELINE                                │
-│                                                                  │
-│  📄 Raw Data          🌊 Stream Layer      ☁️ Cloud Layer        │
-│  ───────────          ──────────────       ────────────          │
-│                                                                  │
-│  fraudTrain.csv  ──►  Kafka Producer  ──►  Apache Kafka         │
-│  (1.3M rows)          (producer.py)        (Topic: fraud-        │
-│                                             transactions)        │
-│                              │                                   │
-│                              ▼                                   │
-│                       Spark Streaming  ──►  GCS Data Lake        │
-│                       (risk scoring)        (Parquet files)      │
-│                              │                                   │
-│                              ▼                                   │
-│                         BigQuery                                 │
-│                    (Partitioned by DAY                           │
-│                     Clustered by                                 │
-│                     category + state)                            │
-│                              │                                   │
-│                              ▼                                   │
-│                       dbt Models                                 │
-│                    (5 transformations)                           │
-│                              │                                   │
-│                              ▼                                   │
-│                    Airflow DAG @daily                            │
-│                    (4-task pipeline)                             │
-│                              │                                   │
-│                              ▼                                   │
-│                    Streamlit Dashboard                           │
-│                    (2 tiles + bonus)                             │
-└─────────────────────────────────────────────────────────────────┘
+For Windows, the PHP binaries can be obtained from
+[windows.php.net](https://windows.php.net). After extracting the archive the
+`*.exe` files are ready to use.
 
-Infrastructure provisioned automatically with Terraform (IaC)
-```
+For other systems, see the [installation chapter](https://php.net/install).
 
----
+### Building PHP source code
 
-## 🛠️ Technology Stack
+*For Windows, see [Build your own PHP on Windows](https://wiki.php.net/internals/windows/stepbystepbuild_sdk_2).*
 
-| Layer | Technology | Why this tool |
-|-------|-----------|---------------|
-| **Cloud** | Google Cloud Platform | Industry-standard, scalable, generous free tier |
-| **IaC** | Terraform | Reproducible infrastructure, version-controlled |
-| **Containerization** | Docker | Portable, consistent environments |
-| **Stream Ingestion** | Apache Kafka + Zookeeper | Industry-standard for real-time event streaming |
-| **Stream Processing** | Apache Spark Streaming | Handles large-scale distributed stream processing |
-| **Data Lake** | Google Cloud Storage | Scalable, cheap, integrates natively with BigQuery |
-| **Data Warehouse** | Google BigQuery | Serverless, columnar, optimized for analytical queries |
-| **Transformations** | dbt (data build tool) | SQL-based, version-controlled, testable transformations |
-| **Orchestration** | Apache Airflow | Industry-standard pipeline scheduling and monitoring |
-| **Visualization** | Streamlit + Plotly | Fast, Python-native, interactive dashboards |
-| **Language** | Python 3.10 | Ecosystem compatibility with all tools above |
+For a minimal PHP build from Git, you will need autoconf, bison, and re2c. For
+a default build, you will additionally need libxml2 and libsqlite3.
 
-> All tools chosen are **open-source** or have **free tiers**, making this pipeline fully reproducible at zero cost.
+On Ubuntu, you can install these using:
 
----
+    sudo apt install -y pkg-config build-essential autoconf bison re2c \
+                        libxml2-dev libsqlite3-dev
 
-## 📊 Dashboard — 2 Mandatory Tiles
+On Fedora, you can install these using:
 
-### Tile 1 — Fraud Rate by Merchant Category *(Categorical Distribution)*
-Shows which merchant categories have the highest fraud rates, enabling analysts to focus monitoring on high-risk sectors like `shopping_net` (1.76%) and `misc_net` (1.45%).
+    sudo dnf install re2c bison autoconf make libtool ccache libxml2-devel sqlite-devel
 
-### Tile 2 — Daily Fraud Trends Over Time *(Temporal Distribution)*
-Shows the evolution of fraudulent transactions day by day, overlaid with total transaction volume, enabling detection of unusual spikes in fraud activity.
+Generate configure:
 
-### Bonus Visualizations
-- 🗺️ Geographic choropleth map — Fraud by US State
-- 🏪 Top 10 most fraudulent merchants
-- 🎂 Fraud rate by customer age group
-- 👤 Fraud distribution by gender
+    ./buildconf
 
----
+Configure your build. `--enable-debug` is recommended for development, see
+`./configure --help` for a full list of options.
 
-## 📈 Key Results
+    # For development
+    ./configure --enable-debug
+    # For production
+    ./configure
 
-| Metric | Value |
-|--------|-------|
-| Total Transactions Processed | 1,296,675 |
-| Fraudulent Cases Detected | 7,506 |
-| Overall Fraud Rate | 0.58% |
-| Total Transaction Volume | $91.2M |
-| Merchant Categories Monitored | 14 |
-| US States Covered | 51 |
-| Most Fraudulent Category | shopping_net (1.76%) |
-| Highest Fraud State | TX (Texas) |
+Build PHP. To speed up the build, specify the maximum number of jobs using `-j`:
 
----
+    make -j4
 
-## 🗄️ Data Warehouse Optimization
+The number of jobs should usually match the number of available cores, which
+can be determined using `nproc`.
 
-The `transactions` table in BigQuery is optimized for analytical performance:
+## Testing PHP source code
 
-**Partitioning** by `trans_date_trans_time` (DAY):
-- Queries filtered by date range scan only relevant partitions
-- Reduces cost and improves performance for time-based fraud analysis
+PHP ships with an extensive test suite, the command `make test` is used after
+successful compilation of the sources to run this test suite.
 
-**Clustering** by `category`, `state`:
-- Co-locates data by merchant type and geography
-- Directly matches the most common fraud query patterns
-```sql
--- Example: This query benefits from both partition + cluster pruning
-SELECT category, COUNT(*) as frauds
-FROM transactions
-WHERE DATE(trans_date_trans_time) = '2020-06-15'  -- uses partition
-  AND category = 'shopping_net'                    -- uses cluster
-  AND is_fraud = 1
-GROUP BY category
-```
+It is possible to run tests using multiple cores by setting `-jN` in
+`TEST_PHP_ARGS`:
 
----
+    make TEST_PHP_ARGS=-j4 test
 
-## 🔄 dbt Transformation Models
+Shall run `make test` with a maximum of 4 concurrent jobs: Generally the maximum
+number of jobs should not exceed the number of cores available.
 
-All transformations are defined in dbt and run as materialized tables in BigQuery:
+The [qa.php.net](https://qa.php.net) site provides more detailed info about
+testing and quality assurance.
 
-| Model | Description | Output Rows |
-|-------|-------------|-------------|
-| `fraud_by_category` | Fraud rate, count & amount per merchant category | 14 |
-| `fraud_by_state` | Fraud distribution across US states | 51 |
-| `fraud_by_merchant` | Top 50 most fraudulent individual merchants | 50 |
-| `fraud_by_time` | Hourly, daily & monthly fraud patterns | 12,877 |
-| `fraud_by_age_gender` | Demographic vulnerability analysis | 18 |
+## Installing PHP built from source
 
----
+After a successful build (and test), PHP may be installed with:
 
-## ⚙️ Airflow Orchestration
+    make install
 
-The `fraud_detection_pipeline` DAG runs **@daily** and validates the entire pipeline:
-```
-check_bigquery_connection     → Verifies GCP connectivity & row count
-         │
-         ▼
-validate_fraud_data           → Validates data quality & fraud metrics
-         │
-         ▼
-check_dbt_tables              → Confirms all 5 dbt models are populated
-         │
-         ▼
-generate_fraud_report         → Outputs top 3 fraud categories to logs
-```
+Depending on your permissions and prefix, `make install` may need super user
+permissions.
 
----
+## PHP extensions
 
-## 🚀 How to Reproduce
+Extensions provide additional functionality on top of PHP. PHP consists of many
+essential bundled extensions. Additional extensions can be found in the PHP
+Extension Community Library - [PECL](https://pecl.php.net).
 
-### Prerequisites
-- Python 3.10+
-- Docker Desktop
-- Terraform v1.0+
-- Java 11+
-- GCP Account (free tier sufficient)
+## Contributing
 
-### Step 1 — Clone the repository
-```bash
-git clone https://github.com/saragh66/fraud-detection-platform.git
-cd fraud-detection-platform
-```
+The PHP source code is located in the Git repository at
+[github.com/php/php-src](https://github.com/php/php-src). Contributions are most
+welcome by forking the repository and sending a pull request.
 
-### Step 2 — GCP Setup
-```bash
-# Create GCP project and service account
-# Download JSON key and rename it
-cp your-key.json gcp-key.json
-export GOOGLE_APPLICATION_CREDENTIALS=gcp-key.json
-```
+Discussions are done on GitHub, but depending on the topic can also be relayed
+to the official PHP developer mailing list internals@lists.php.net.
 
-### Step 3 — Provision infrastructure
-```bash
-cd terraform
-terraform init
-terraform apply
-# Creates: GCS bucket + BigQuery dataset
-```
+New features require an RFC and must be accepted by the developers. See
+[Request for comments - RFC](https://wiki.php.net/rfc) and
+[Voting on PHP features](https://wiki.php.net/rfc/voting) for more information
+on the process.
 
-### Step 4 — Start Kafka
-```bash
-docker-compose up -d
-# Starts: Kafka + Zookeeper containers
-```
+Bug fixes don't require an RFC. If the bug has a GitHub issue, reference it in
+the commit message using `GH-NNNNNN`. Use `#NNNNNN` for tickets in the old
+[bugs.php.net](https://bugs.php.net) bug tracker.
 
-### Step 5 — Install dependencies
-```bash
-pip install -r requirements.txt
-```
+    Fix GH-7815: php_uname doesn't recognise latest Windows versions
+    Fix #55371: get_magic_quotes_gpc() throws deprecation warning
 
-### Step 6 — Stream transactions to Kafka
-```bash
-python producer.py
-# Sends 1.3M transactions to Kafka topic
-```
+See [Git workflow](https://wiki.php.net/vcs/gitworkflow) for details on how pull
+requests are merged.
 
-### Step 7 — Load data to BigQuery
-```bash
-python upload_to_bq.py
-# Loads partitioned + clustered table
-```
+### Guidelines for contributors
 
-### Step 8 — Run dbt transformations
-```bash
-cd fraud_dbt
-dbt run
-# Creates 5 analytical models
-```
+See further documents in the repository for more information on how to
+contribute:
 
-### Step 9 — Launch dashboard
-```bash
-streamlit run dashboard.py
-# Opens at http://localhost:8501
-```
+- [Contributing to PHP](/CONTRIBUTING.md)
+- [PHP coding standards](/CODING_STANDARDS.md)
+- [Mailing list rules](/docs/mailinglist-rules.md)
+- [PHP release process](/docs/release-process.md)
 
----
+## Credits
 
-## 📁 Project Structure
-```
-fraud-detection-platform/
-│
-├── 📂 terraform/                    # Infrastructure as Code
-│   └── main.tf                      # GCS bucket + BigQuery dataset
-│
-├── 📂 fraud_dbt/                    # dbt project
-│   ├── dbt_project.yml
-│   └── models/fraud/
-│       ├── sources.yml
-│       ├── fraud_by_category.sql
-│       ├── fraud_by_state.sql
-│       ├── fraud_by_merchant.sql
-│       ├── fraud_by_time.sql
-│       └── fraud_by_age_gender.sql
-│
-├── 📂 dags/                         # Airflow DAG
-│   └── fraud_detection_dag.py
-│
-├── producer.py                      # Kafka producer
-├── consumer.py                      # Kafka consumer (testing)
-├── spark_streaming.py               # Spark streaming job
-├── upload_to_bq.py                  # BigQuery loader (partitioned)
-├── dashboard.py                     # Streamlit dashboard
-├── docker-compose.yml               # Kafka + Zookeeper setup
-├── requirements.txt                 # Python dependencies
-└── README.md
-```
-
----
-
-## 📦 Dataset
-
-**Source**: [Credit Card Fraud Detection — Kaggle](https://www.kaggle.com/datasets/kartik2112/fraud-detection)
-
-- **1,296,675** training transactions
-- **21 features** including merchant, category, amount, location, timestamp
-- **Fraud rate**: 0.58% (real-world imbalanced dataset)
-- **Period**: January 2019 — December 2020
-
----
-
-## 👤 Author
-
-**Sara El Ghayati**
-- 🎓 DE Zoomcamp 2025 — Capstone Project
-- 🔗 GitHub: [@saragh66](https://github.com/saragh66)
-
----
-
-*Built as part of the [Data Engineering Zoomcamp](https://github.com/DataTalksClub/data-engineering-zoomcamp) by DataTalksClub*
+For the list of people who've put work into PHP, please see the
+[PHP credits page](https://php.net/credits.php).
