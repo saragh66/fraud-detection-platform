@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: fraud_detection
+    database: fraud-detection-project-491323
+    schema: fraud_detection
+    tables:
+      - name: transactions
