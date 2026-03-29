@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Credentials
 gcp-key.json
 dags/gcp-key.json
@@ -29,19 +28,6 @@ fraud_dbt/logs/
 
 # Parquet
 *.parquet
-=======
-*.tar
-*.tar.*
-*.jar
-*.exe
-*.msi
-*.deb
-*.zip
-*.tgz
-*.log
-*.log.*
-*.sig
 
-pkg/
-src/
->>>>>>> 99bcc7d97809dfbebb0468f8a8b0a8b27310648a
+# Large jars (but keep pictures!)
+jars/
