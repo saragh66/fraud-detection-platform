@@ -75,21 +75,21 @@ Infrastructure provisioned automatically with Terraform (IaC)
 ### 1️⃣ Spark Streaming Running → Writing to GCS
 > Spark successfully started, connected to Kafka topic `fraud-transactions` and began writing Parquet files to GCS.
 
-![Spark Running](pictures/spark-running.png)
+![Spark Running](https://github.com/user-attachments/assets/6d2ba8c1-0b15-4d34-88fa-ab468b551306)
 
 ---
 
 ### 2️⃣ Parquet Files Written to GCS
 > **1,296,675 transactions** processed by Spark Streaming and written as Parquet files to `gs://fraud-detection-bucket-491323/transactions/` with checkpoints at `gs://fraud-detection-bucket-491323/checkpoints/`
 
-![GCS Parquet Files](pictures/gcs-parquet-files.png)
+![GCS Parquet Files](https://github.com/user-attachments/assets/d4e8c6eb-e34e-49c2-bba9-4d9c04f704b2)
 
 ---
 
 ### 3️⃣ Airflow Pipeline Validation — SUCCESS
 > Airflow DAG `fraud_detection_pipeline` ran successfully — data validated in BigQuery with correct fraud metrics.
 
-![Airflow Validation](pictures/airflow.jpeg)
+![Airflow Validation](https://github.com/user-attachments/assets/1ca0bc1f-fb71-4acd-b080-bf0445b3e0db)
 
 ---
 
@@ -314,9 +314,6 @@ fraud-detection-platform/
 │   ├── spark-running.png            # Spark Streaming connected to Kafka + GCS
 │   ├── gcs-parquet-files.png        # Parquet files written to GCS bucket
 │   └── airflow.jpeg                 # Airflow DAG validation SUCCESS
-│
-├── 📂 jars/                         # GCS connector shaded JAR
-│   └── gcs-connector-hadoop3-2.2.22-shaded.jar
 │
 ├── producer.py                      # Kafka producer
 ├── consumer.py                      # Kafka consumer (testing)
